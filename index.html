@@ -141,14 +141,14 @@
             <div class="bg-barbarYellow rounded-3xl p-6 md:p-10 pop-card relative overflow-hidden flex flex-col items-center text-center space-y-8">
                 
                 <!-- Top Header banner matching reference (Updated with aesthetic Kedai Bar-bar image centered, fitted, and larger) -->
-                <div class="w-full flex items-center justify-center bg-barbarRed p-4 rounded-2xl border-3 border-black shadow-md relative">
-                    <div class="absolute left-4 hidden sm:flex items-center">
-                        <img src="logo barbar.jpg" alt="Logo Bar-Bar" class="w-16 h-16 rounded-full object-cover border-2 border-black">
+                <div class="w-full flex items-center justify-center bg-barbarRed p-4 rounded-2xl border-4 border-black shadow-md relative overflow-hidden min-h-[100px]">
+                    <div class="absolute left-4 hidden md:flex items-center z-10">
+                        <img src="logo barbar.jpg" alt="Logo Bar-Bar" class="w-16 h-16 rounded-full object-cover border-2 border-black bg-white shadow">
                     </div>
-                    <div class="w-full max-w-md md:max-w-lg py-1 flex items-center justify-center">
-                        <img src="kedai barbar.jpg" alt="Kedai Bar-Bar Aesthetic" class="w-full h-auto max-h-24 object-contain rounded-xl">
+                    <div class="w-full max-w-[280px] sm:max-w-xs md:max-w-sm bg-white rounded-2xl border-4 border-black py-2 px-6 flex items-center justify-center z-10 shadow-sm mx-auto">
+                        <img src="kedai barbar.jpg" alt="Kedai Bar-Bar Aesthetic" class="w-full h-auto max-h-20 object-contain">
                     </div>
-                    <div class="absolute right-4 hidden sm:block bg-white px-4 py-2 rounded-full border-2 border-black font-retro font-bold text-sm text-gray-900 shadow">
+                    <div class="absolute right-4 hidden lg:block bg-white px-5 py-2.5 rounded-full border-2 border-black font-retro font-extrabold text-sm text-gray-900 shadow">
                         Home Page
                     </div>
                 </div>
@@ -431,7 +431,7 @@
                     <div><i class="fa-solid fa-location-dot text-barbarRed mr-1"></i> Kantin Biru / Blok G, Universitas Negeri Jakarta</div>
                     <div><i class="fa-solid fa-clock text-barbarRed mr-1"></i> Senin - Jumat, 07.00 - 17.00 WIB</div>
                 </div>
-                <a href="https://wa.me/6281234567890?text=Halo%20Kedai%20Bar-Bar%20UNJ,%20saya%20ingin%20bertanya%20tentang%20menu." target="_blank" class="inline-flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-retro text-xl py-3.5 rounded-2xl pop-button font-bold">
+                <a href="https://wa.me/628111023383?text=Halo%20Kedai%20Bar-Bar%20UNJ,%20saya%20ingin%20bertanya%20tentang%20menu." target="_blank" class="inline-flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-retro text-xl py-3.5 rounded-2xl pop-button font-bold">
                     <i class="fa-brands fa-whatsapp text-2xl"></i> CHAT WHATSAPP SEKARANG
                 </a>
             </div>
@@ -484,7 +484,7 @@
         <section id="seller-orders-section">
             <div class="mb-4 flex justify-between items-center">
                 <h2 class="text-xl font-bold text-gray-800 font-retro">Daftar Tiket Pesanan Baru</h2>
-                <span class="text-xs text-gray-500 font-medium">Penjual dapat mengedit jumlah item atau klik "PAYMENT COMPLETED"</span>
+                
             </div>
 
             <div id="seller-order-tickets" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -555,6 +555,10 @@
                         <option value="drinks">Drinks</option>
                         <option value="dessert">Snack and Dessert</option>
                     </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase mb-1">Foto Menu (Opsional)</label>
+                    <input type="file" id="new-menu-image" accept="image/*" class="w-full px-3 py-1.5 bg-white border-2 border-black rounded-xl text-sm font-medium">
                 </div>
                 <div class="flex gap-2 pt-2">
                     <button type="button" onclick="closeAddMenuModal()" class="w-1/2 bg-gray-200 font-bold py-2.5 rounded-xl border-2 border-black">Batal</button>
@@ -994,30 +998,36 @@
             schedulePanel.classList.add('hidden');
 
             let list = [];
-            if (searchKeyword) {
-                list = products.filter(p => p.name.toLowerCase().includes(searchKeyword));
-                paginationBox.classList.add('hidden');
-                pageIndicator.classList.add('hidden');
-            } else if (currentMenuCat === 'bestseller') {
+            
+            // 1. Ambil data HANYA dari kategori yang sedang aktif
+            if (currentMenuCat === 'bestseller') {
                 list = products.filter(p => p.bestSeller);
-                paginationBox.classList.add('hidden');
-                pageIndicator.classList.add('hidden');
-            } else if (currentMenuCat === 'foods') {
-                const allFoods = products.filter(p => p.category === 'foods');
-                const perPage = 11;
-                const start = (currentFoodPage - 1) * perPage;
-                list = allFoods.slice(start, start + perPage);
-
-                paginationBox.classList.remove('hidden');
-                pageIndicator.classList.remove('hidden');
-                pageIndicator.innerText = `Halaman ${currentFoodPage}/2`;
-                document.getElementById('food-page-label').innerText = `${currentFoodPage} / 2`;
-                document.getElementById('btn-prev-food').disabled = currentFoodPage === 1;
-                document.getElementById('btn-next-food').disabled = currentFoodPage === 2;
             } else {
                 list = products.filter(p => p.category === currentMenuCat);
+            }
+
+            // 2. Filter pencarian HANYA dari list kategori tersebut
+            if (searchKeyword) {
+                list = list.filter(p => p.name.toLowerCase().includes(searchKeyword));
                 paginationBox.classList.add('hidden');
                 pageIndicator.classList.add('hidden');
+            } else {
+                // 3. Terapkan pagination hanya untuk Foods jika tidak sedang mencari
+                if (currentMenuCat === 'foods') {
+                    const perPage = 11;
+                    const start = (currentFoodPage - 1) * perPage;
+                    list = list.slice(start, start + perPage);
+
+                    paginationBox.classList.remove('hidden');
+                    pageIndicator.classList.remove('hidden');
+                    pageIndicator.innerText = `Halaman ${currentFoodPage}/2`;
+                    document.getElementById('food-page-label').innerText = `${currentFoodPage} / 2`;
+                    document.getElementById('btn-prev-food').disabled = currentFoodPage === 1;
+                    document.getElementById('btn-next-food').disabled = currentFoodPage === 2;
+                } else {
+                    paginationBox.classList.add('hidden');
+                    pageIndicator.classList.add('hidden');
+                }
             }
 
             container.innerHTML = '';
@@ -1355,16 +1365,37 @@
             const name = document.getElementById('new-menu-name').value;
             const price = parseInt(document.getElementById('new-menu-price').value);
             const category = document.getElementById('new-menu-cat').value;
+            const imageFile = document.getElementById('new-menu-image').files[0];
 
+            let imageBase64 = null;
+
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.readAsDataURL(imageFile);
+                reader.onload = function () {
+                    imageBase64 = reader.result;
+                    saveNewMenuData(name, price, category, imageBase64);
+                };
+                reader.onerror = function (error) {
+                    console.error('Error membaca file gambar:', error);
+                    saveNewMenuData(name, price, category, null);
+                };
+            } else {
+                saveNewMenuData(name, price, category, null);
+            }
+        };
+
+        async function saveNewMenuData(name, price, category, imageBase64) {
             const newId = Date.now();
             const newMenuObj = {
                 id: newId,
                 name: name,
                 price: price,
                 category: category,
-                bestSeller: false,
+                bestSeller: true, // Otomatis jadikan Best Seller agar muncul di beranda
                 icon: 'fa-utensils',
-                color: 'bg-red-700'
+                color: 'bg-red-700',
+                image: imageBase64
             };
 
             if (db && currentUser) {
@@ -1376,14 +1407,18 @@
                 }
             } else {
                 products.push(newMenuObj);
+                // Langsung arahkan ke tab kategori tempat dia ditambahkan
+                selectMenuCategory(category); 
                 renderMenuSection();
             }
 
             closeAddMenuModal();
-            showModal('Menu Ditambahkan', `Menu "${name}" berhasil ditambahkan dan disinkronkan ke katalog pembeli!`);
+            showModal('Menu Ditambahkan', `Menu "${name}" berhasil ditambahkan dan otomatis muncul di aplikasi!`);
+            
             document.getElementById('new-menu-name').value = '';
             document.getElementById('new-menu-price').value = '';
-        };
+            document.getElementById('new-menu-image').value = '';
+        }
 
         
         window.openManageMenuModal = function() {
