@@ -92,6 +92,8 @@
             <div class="flex items-center gap-3">
                 <div class="bg-barbarYellow text-barbarDarkRed p-1 rounded-full border-2 border-black flex items-center justify-center">
                     <img src="logo barbar.jpg" alt="Logo Bar-Bar" class="w-10 h-10 rounded-full object-cover border border-black">
+                </div>
+            </div>
             <!-- Role View Switcher (Upgraded Pop-Retro Aesthetic) -->
             <div class="flex items-center bg-[#7F1D1D] p-1.5 rounded-2xl border-2 border-black shadow-inner gap-1.5">
                 <button id="btn-customer-mode" onclick="switchView('customer')" class="px-4 py-2 rounded-xl text-sm font-retro font-bold tracking-wide transition-all flex items-center gap-2 bg-barbarYellow text-black border-2 border-black shadow-[3px_3px_0px_#000] hover:bg-yellow-300">
@@ -136,59 +138,68 @@
             </div>
         </nav>
 
-        <!-- PAGE 1: HOME PAGE (Redesigned to match the reference image) -->
+        <!-- PAGE 1: HOME PAGE -->
         <section id="page-home" class="space-y-6">
             <div class="bg-barbarYellow rounded-3xl p-6 md:p-10 pop-card relative overflow-hidden flex flex-col items-center text-center space-y-8">
                 
-                <!-- Top Header banner matching reference (Updated with aesthetic Kedai Bar-bar image centered, fitted, and larger) -->
-                <div class="w-full flex items-center justify-center bg-barbarRed p-4 rounded-2xl border-4 border-black shadow-md relative overflow-hidden min-h-[100px]">
-                    <div class="absolute left-4 hidden md:flex items-center z-10">
-                        <img src="logo barbar.jpg" alt="Logo Bar-Bar" class="w-16 h-16 rounded-full object-cover border-2 border-black bg-white shadow">
+                <!-- Top Header banner -->
+                <div class="w-full flex flex-col sm:flex-row items-center justify-center bg-barbarRed p-4 sm:p-5 rounded-2xl border-3 border-black shadow-md relative gap-3">
+                    <div class="sm:absolute sm:left-5 flex items-center justify-center">
+                        <img src="logo barbar.jpg" alt="Logo Bar-Bar" onerror="this.style.display='none';" class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-black shadow">
                     </div>
-                    <div class="w-full max-w-[280px] sm:max-w-xs md:max-w-sm bg-white rounded-2xl border-4 border-black py-2 px-6 flex items-center justify-center z-10 shadow-sm mx-auto">
-                        <img src="kedai barbar.jpg" alt="Kedai Bar-Bar Aesthetic" class="w-full h-auto max-h-20 object-contain">
+                    <div class="w-full max-w-md md:max-w-lg py-1 flex flex-col items-center justify-center mx-auto text-center">
+                        <img src="kedai barbar.jpg" alt="Kedai Bar-Bar Aesthetic" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-auto max-h-24 object-contain rounded-xl mx-auto">
+                        <h1 class="hidden font-retro text-3xl sm:text-4xl md:text-5xl font-extrabold text-barbarYellow retro-title-stroke tracking-wider uppercase text-center">
+                            KEDAI BAR-BAR
+                        </h1>
                     </div>
-                    <div class="absolute right-4 hidden lg:block bg-white px-5 py-2.5 rounded-full border-2 border-black font-retro font-extrabold text-sm text-gray-900 shadow">
+                    <div class="sm:absolute sm:right-5 bg-white px-4 py-1.5 rounded-full border-2 border-black font-retro font-bold text-xs sm:text-sm text-gray-900 shadow">
                         Home Page
                     </div>
                 </div>
 
                 <!-- Subtitle Pill -->
-                <div class="inline-block bg-white px-8 py-2 rounded-full border-2 border-black font-retro font-bold text-lg text-gray-900 shadow">
+                <div class="inline-block bg-white px-8 py-2.5 rounded-full border-2 border-black font-retro font-bold text-base sm:text-lg text-gray-900 shadow mx-auto">
                     WHAT DO YOU WANT TO KNOW?
                 </div>
 
-                <!-- Three Interactive Navigation Cards matching the screenshot -->
-                <div class="grid md:grid-cols-3 gap-6 w-full max-w-5xl">
-                    <!-- Card 1: About Us (Updated with about us 2.jpg) -->
-                    <div onclick="switchCustomerTab('about')" class="bg-[#FFFDF5] rounded-3xl p-6 border-4 border-black pop-card cursor-pointer transition transform hover:-translate-y-2 flex flex-col items-center justify-center min-h-[320px] space-y-6 shadow-lg">
-                        <div class="w-full max-w-[200px]">
-                            <img src="about us.jpg" alt="About Us" class="w-full h-auto object-contain drop-shadow">
+                <!-- Three Interactive Navigation Cards -->
+                <div class="grid md:grid-cols-3 gap-6 w-full max-w-5xl mx-auto">
+                    <!-- Card 1: About Us -->
+                    <div onclick="switchCustomerTab('about')" class="bg-[#FFFDF5] rounded-3xl p-6 border-4 border-black pop-card cursor-pointer transition transform hover:-translate-y-2 flex flex-col items-center justify-center min-h-[300px] space-y-5 shadow-lg text-center">
+                        <div class="w-full max-w-[200px] flex items-center justify-center mx-auto">
+                            <img src="about us.jpg" alt="About Us" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-auto object-contain drop-shadow mx-auto">
+                            <div class="hidden font-retro text-3xl font-extrabold text-barbarYellow retro-title-stroke leading-tight text-center uppercase">
+                                ABOUT<br>US
+                            </div>
                         </div>
-                        <div class="w-full max-w-[160px] rounded-2xl overflow-hidden border-2 border-black bg-white p-1 shadow">
-                            <img src="about us 2.jpg" alt="About Us 2" class="w-full h-20 object-contain">
+                        <div class="w-full max-w-[160px] rounded-2xl overflow-hidden border-2 border-black bg-white p-1.5 shadow mx-auto flex items-center justify-center">
+                            <img src="about us 2.jpg" alt="About Us 2" onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-store text-3xl text-barbarRed py-3\'></i>';" class="w-full h-20 object-contain mx-auto">
                         </div>
                     </div>
 
-                    <!-- Card 2: Our Menu (Updated with our menu 2.jpg) -->
-                    <div onclick="switchCustomerTab('menu')" class="bg-[#FFFDF5] rounded-3xl p-6 border-4 border-black pop-card cursor-pointer transition transform hover:-translate-y-2 flex flex-col items-center justify-center min-h-[320px] space-y-4 shadow-lg">
-                        <div class="w-full max-w-[180px]">
-                            <img src="our menu.jpg" alt="Our Menu" class="w-full h-auto object-contain drop-shadow">
+                    <!-- Card 2: Our Menu -->
+                    <div onclick="switchCustomerTab('menu')" class="bg-[#FFFDF5] rounded-3xl p-6 border-4 border-black pop-card cursor-pointer transition transform hover:-translate-y-2 flex flex-col items-center justify-center min-h-[300px] space-y-5 shadow-lg text-center">
+                        <div class="w-full max-w-[180px] flex items-center justify-center mx-auto">
+                            <img src="our menu.jpg" alt="Our Menu" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-auto object-contain drop-shadow mx-auto">
+                            <div class="hidden font-retro text-3xl font-extrabold text-barbarYellow retro-title-stroke leading-tight text-center uppercase">
+                                OUR<br>MENU
+                            </div>
                         </div>
-                        <div class="w-full max-w-[160px] rounded-2xl overflow-hidden border-2 border-black bg-white p-1 shadow">
-                            <img src="our menu 2.jpg" alt="Our Menu 2" class="w-full h-20 object-contain">
+                        <div class="w-full max-w-[160px] rounded-2xl overflow-hidden border-2 border-black bg-white p-1.5 shadow mx-auto flex items-center justify-center">
+                            <img src="our menu 2.jpg" alt="Our Menu 2" onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-utensils text-3xl text-barbarRed py-3\'></i>';" class="w-full h-20 object-contain mx-auto">
                         </div>
                     </div>
 
                     <!-- Card 3: Contact Person -->
-                    <div onclick="switchCustomerTab('contact')" class="bg-[#FFFDF5] rounded-3xl p-6 border-4 border-black pop-card cursor-pointer transition transform hover:-translate-y-2 flex flex-col items-center justify-center min-h-[320px] space-y-6 shadow-lg">
-                        <div class="w-full max-w-[200px] rounded-2xl overflow-hidden bg-white p-1 flex items-center justify-center">
-                            <img src="contact person.jpg" alt="Contact Person" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-auto object-contain drop-shadow">
+                    <div onclick="switchCustomerTab('contact')" class="bg-[#FFFDF5] rounded-3xl p-6 border-4 border-black pop-card cursor-pointer transition transform hover:-translate-y-2 flex flex-col items-center justify-center min-h-[300px] space-y-5 shadow-lg text-center">
+                        <div class="w-full max-w-[200px] rounded-2xl overflow-hidden bg-white p-1 flex items-center justify-center mx-auto">
+                            <img src="contact person.jpg" alt="Contact Person" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" class="w-full h-auto object-contain drop-shadow mx-auto">
                             <div class="hidden font-retro text-3xl font-extrabold text-barbarYellow retro-title-stroke leading-tight text-center uppercase">
                                 CONTACT<br>PERSON
                             </div>
                         </div>
-                        <div class="w-16 h-16 bg-green-500 rounded-full border-3 border-black flex items-center justify-center text-4xl text-white shadow">
+                        <div class="w-16 h-16 bg-green-500 rounded-full border-3 border-black flex items-center justify-center text-4xl text-white shadow mx-auto">
                             <i class="fa-brands fa-whatsapp"></i>
                         </div>
                     </div>
@@ -427,9 +438,10 @@
                     <h3 class="font-bold text-xl text-gray-900">Kedai Bar-Bar (Kantin UNJ Blok G)</h3>
                     <p class="text-sm text-gray-600">Melayani pemesanan harian mahasiswa, katering acara kampus, dan informasi menu.</p>
                 </div>
-                <div class="bg-white p-4 rounded-2xl border-2 border-black text-sm font-semibold space-y-1">
+                <div class="bg-white p-4 rounded-2xl border-2 border-black text-sm font-semibold space-y-1.5">
                     <div><i class="fa-solid fa-location-dot text-barbarRed mr-1"></i> Kantin Biru / Blok G, Universitas Negeri Jakarta</div>
                     <div><i class="fa-solid fa-clock text-barbarRed mr-1"></i> Senin - Jumat, 07.00 - 17.00 WIB</div>
+                    <div><i class="fa-brands fa-whatsapp text-green-600 mr-1"></i> 08111023383</div>
                 </div>
                 <a href="https://wa.me/628111023383?text=Halo%20Kedai%20Bar-Bar%20UNJ,%20saya%20ingin%20bertanya%20tentang%20menu." target="_blank" class="inline-flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white font-retro text-xl py-3.5 rounded-2xl pop-button font-bold">
                     <i class="fa-brands fa-whatsapp text-2xl"></i> CHAT WHATSAPP SEKARANG
@@ -461,8 +473,11 @@
                     <i class="fa-solid fa-utensils"></i> Kelola Menu & Harga
                 </button>
                 <div class="bg-black/40 px-4 py-2 rounded-2xl border border-red-400 text-center">
-                    <div class="text-xs text-gray-300">Total Pendapatan</div>
-                    <div id="stat-total-income" class="font-retro text-2xl font-bold text-green-400">Rp 0</div>
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                        <span class="text-xs text-gray-300">Pendapatan Tanggal:</span>
+                        <input type="date" id="income-filter-date-picker" onchange="renderSellerOrders()" class="bg-black/60 text-yellow-300 text-[11px] font-bold rounded px-1.5 py-0.5 border border-yellow-400/50 focus:outline-none">
+                    </div>
+                    <div id="stat-total-income" class="font-retro text-xl font-bold text-green-400">Rp 0</div>
                 </div>
                 <button onclick="lockSellerSession()" class="bg-gray-800 hover:bg-gray-900 text-white font-retro font-bold px-4 py-3 rounded-2xl border-2 border-black pop-button text-sm flex items-center gap-1.5">
                     <i class="fa-solid fa-right-from-bracket"></i> Kunci Kasir
@@ -484,7 +499,6 @@
         <section id="seller-orders-section">
             <div class="mb-4 flex justify-between items-center">
                 <h2 class="text-xl font-bold text-gray-800 font-retro">Daftar Tiket Pesanan Baru</h2>
-                
             </div>
 
             <div id="seller-order-tickets" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -557,8 +571,13 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase mb-1">Foto Menu (Opsional)</label>
-                    <input type="file" id="new-menu-image" accept="image/*" class="w-full px-3 py-1.5 bg-white border-2 border-black rounded-xl text-sm font-medium">
+                    <label class="block text-xs font-bold uppercase mb-1">Foto Menu (Upload Gambar atau Link URL)</label>
+                    <input type="file" id="new-menu-file" accept="image/*" onchange="previewNewMenuImage(event)" class="w-full px-3 py-1.5 bg-white border-2 border-black rounded-xl text-xs mb-2">
+                    <input type="text" id="new-menu-image-url" placeholder="Atau tempel link gambar / nama file (opsional)..." class="w-full px-3 py-2 bg-white border-2 border-black rounded-xl text-xs">
+                    <div id="new-menu-preview-box" class="hidden mt-2 flex items-center gap-3 bg-white p-2 rounded-xl border border-black">
+                        <img id="new-menu-preview-img" src="" alt="Preview" class="w-12 h-12 object-cover rounded-lg border border-black">
+                        <span class="text-xs font-semibold text-green-700">Foto siap ditambahkan!</span>
+                    </div>
                 </div>
                 <div class="flex gap-2 pt-2">
                     <button type="button" onclick="closeAddMenuModal()" class="w-1/2 bg-gray-200 font-bold py-2.5 rounded-xl border-2 border-black">Batal</button>
@@ -660,8 +679,9 @@
         const defaultProducts = [
             { id: 1, name: 'Nasi Ayam Bakar', price: 23000, category: 'foods', bestSeller: true, icon: 'fa-drumstick-bite', color: 'bg-amber-700', image: 'nasi ayam bakar.jpg' },
             { id: 2, name: 'Nasi Ayam Goreng Lengkuas', price: 23000, category: 'foods', bestSeller: true, icon: 'fa-utensils', color: 'bg-yellow-600', image: 'ayam goreng lengkuas.jpg' },
-            { id: 3, name: 'Ice Cream Cone', price: 15000, category: 'dessert', bestSeller: true, icon: 'fa-ice-cream', color: 'bg-pink-500', image: 'ice cream cone.jpg' },
-            { id: 6, name: 'Nasi Cumi Cabe Hijau', price: 20000, category: 'foods', bestSeller: true, icon: 'fa-bowl-food', color: 'bg-green-700', image: 'cumi cabe ijo.jpg' },
+            { id: 3, name: 'Ice Cream Cone', price: 8000, category: 'dessert', bestSeller: true, icon: 'fa-ice-cream', color: 'bg-pink-500', image: 'ice cream cone.jpg' },
+            { id: 4, name: 'Es Teh Poci', price: 5000, category: 'drinks', bestSeller: true, icon: 'fa-mug-hot', color: 'bg-amber-600', image: '' },
+            { id: 6, name: 'Nasi Cumi Cabe Hijau', price: 20000, category: 'foods', bestSeller: false, icon: 'fa-bowl-food', color: 'bg-green-700', image: 'cumi cabe ijo.jpg' },
             { id: 7, name: 'Nasi Goreng *Biasa Special Seafood Kambing', price: 17000, category: 'foods', bestSeller: false, icon: 'fa-plate-wheat', color: 'bg-orange-600', image: 'nasi goreng.jpg' },
             { id: 8, name: 'Nasi Ayam Geprek', price: 18000, category: 'foods', bestSeller: false, icon: 'fa-fire', color: 'bg-red-700', image: 'ayam geprek.jpg' },
             { id: 9, name: 'Rice Bowl Egg Roll', price: 20000, category: 'foods', bestSeller: false, icon: 'fa-bowl-rice', color: 'bg-amber-600', image: 'ricebowl eggroll.jpg' },
@@ -671,24 +691,15 @@
             { id: 13, name: 'Ricebowl Ebi Katsu', price: 20000, category: 'foods', bestSeller: false, icon: 'fa-bowl-rice', color: 'bg-orange-600', image: 'rb ebi katsu.jpg' },
             { id: 14, name: 'Bakso Aci', price: 15000, category: 'foods', bestSeller: false, icon: 'fa-bowl-food', color: 'bg-red-500', image: 'baso aci.jpg' },
             { id: 15, name: 'Rice Bowl Spicy Chicken Wings', price: 20000, category: 'foods', bestSeller: false, icon: 'fa-drumstick-bite', color: 'bg-red-700', image: 'rb spicy chicken wings.jpg' },
-            { id: 16, name: 'Ricebowl Kani Katsu', price: 20000, category: 'foods', bestSeller: false, icon: 'fa-bowl-rice', color: 'bg-rose-500', image: 'rb kani katsu.jpg' },
             { id: 17, name: 'Rice Bowl Kulit Ayam Gurih', price: 20000, category: 'foods', bestSeller: false, icon: 'fa-bowl-rice', color: 'bg-yellow-700', image: 'rb kulit ayam gurih.jpg' },
             { id: 18, name: 'Rice Bowl Beef Teriyaki', price: 20000, category: 'foods', bestSeller: false, icon: 'fa-bowl-rice', color: 'bg-stone-700', image: 'rb beef teriyaki.jpg' },
             { id: 19, name: 'Rice Bowl Chicken Popcorn', price: 20000, category: 'foods', bestSeller: false, icon: 'fa-bowl-rice', color: 'bg-amber-500', image: 'rb chicken popcorn.jpg' },
             { id: 20, name: 'Mie Kocok', price: 17000, category: 'foods', bestSeller: false, icon: 'fa-bowl-food', color: 'bg-yellow-600', image: 'mie kocok.jpg' },
             { id: 21, name: 'Mie Chili Oil', price: 15000, category: 'foods', bestSeller: false, icon: 'fa-pepper-hot', color: 'bg-red-600', image: 'mie chilli oil.jpg' },
             { id: 22, name: 'Mie Bangladesh', price: 17000, category: 'foods', bestSeller: false, icon: 'fa-bowl-food', color: 'bg-orange-700', image: 'mie bangladesh.jpg' },
-            { id: 23, name: 'Kwetiau Goreng', price: 17000, category: 'foods', bestSeller: false, icon: 'fa-plate-wheat', color: 'bg-amber-700', image: 'kwetiau.jpg' },
             { id: 24, name: 'Seblak', price: 15000, category: 'foods', bestSeller: false, icon: 'fa-fire-flame-curved', color: 'bg-red-600', image: 'seblak.jpg' },
             { id: 36, name: 'Steamboat Kuah', price: 25000, category: 'foods', bestSeller: false, icon: 'fa-bowl-food', color: 'bg-red-600', image: 'steamboat kuah - A4.png' },
-            { id: 25, name: 'Brown Sugar Cofffe Latte', price: 20000, category: 'drinks', bestSeller: false, icon: 'fa-mug-saucer', color: 'bg-amber-900', image: 'brown sugar latte - A4.png' },
-            { id: 26, name: 'Coffe Latte', price: 20000, category: 'drinks', bestSeller: false, icon: 'fa-mug-hot', color: 'bg-amber-700', image: 'coffee latte - A4.png' },
-            { id: 27, name: 'Ice Americano', price: 15000, category: 'drinks', bestSeller: false, icon: 'fa-glass-water', color: 'bg-stone-800', image: 'ice americano - A4.png' },
-            { id: 28, name: 'Hot Coffe', price: 15000, category: 'drinks', bestSeller: false, icon: 'fa-mug-hot', color: 'bg-yellow-900', image: 'hot coffee - A4.png' },
-            { id: 29, name: 'Milkshakes (Choco/Matcha/Vanilla)', price: 15000, category: 'drinks', bestSeller: false, icon: 'fa-blender', color: 'bg-pink-400', image: 'aneka milkshake - A4.png' },
-            { id: 30, name: 'Aneka Juice', price: 17000, category: 'drinks', bestSeller: false, icon: 'fa-wine-glass', color: 'bg-orange-500', image: 'aneka jus - A4.png' },
-            { id: 31, name: 'Soda Float', price: 15000, category: 'drinks', bestSeller: false, icon: 'fa-bottle-water', color: 'bg-red-600', image: 'soda float - A4.png' },
-            { id: 32, name: 'Ice Cream Sundae', price: 20000, category: 'dessert', bestSeller: false, icon: 'fa-ice-cream', color: 'bg-rose-500', image: 'ice cream sundae - A4.png' },
+            { id: 32, name: 'Ice Cream Sundae', price: 15000, category: 'dessert', bestSeller: false, icon: 'fa-ice-cream', color: 'bg-rose-500', image: 'ice cream sundae - A4.png' },
             { id: 33, name: 'Odeng Kuah', price: 25000, category: 'dessert', bestSeller: false, icon: 'fa-utensils', color: 'bg-orange-500', image: 'odeng kuah - A4.png' },
             { id: 34, name: 'Odeng Mentai', price: 25000, category: 'dessert', bestSeller: false, icon: 'fa-utensils', color: 'bg-amber-600', image: 'odeng mentai - A4.png' },
             { id: 35, name: 'Pangsit Chili Oil', price: 15000, category: 'dessert', bestSeller: false, icon: 'fa-bowl-food', color: 'bg-red-600', image: 'pangsit chilli oil - A4.png' }
@@ -719,8 +730,8 @@
 
                 osc1.type = 'sine';
                 osc2.type = 'triangle';
-                osc1.frequency.setValueAtTime(880, audioCtx.currentTime); // Nada A5
-                osc1.frequency.setValueAtTime(1174.66, audioCtx.currentTime + 0.15); // Nada D6
+                osc1.frequency.setValueAtTime(880, audioCtx.currentTime);
+                osc1.frequency.setValueAtTime(1174.66, audioCtx.currentTime + 0.15);
                 osc2.frequency.setValueAtTime(880, audioCtx.currentTime);
                 osc2.frequency.setValueAtTime(1174.66, audioCtx.currentTime + 0.15);
 
@@ -749,10 +760,16 @@
                 db = getFirestore(app);
                 auth = getAuth(app);
 
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    const cred = await signInWithCustomToken(auth, __initial_auth_token);
-                    currentUser = cred.user;
-                } else {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        const cred = await signInWithCustomToken(auth, __initial_auth_token);
+                        currentUser = cred.user;
+                    } else {
+                        const cred = await signInAnonymously(auth);
+                        currentUser = cred.user;
+                    }
+                } catch (authErr) {
+                    console.warn('Custom token tidak cocok dengan project Firebase Anda, beralih ke Anonymous Auth:', authErr.code);
                     const cred = await signInAnonymously(auth);
                     currentUser = cred.user;
                 }
@@ -774,14 +791,12 @@
                         }
                     });
 
-                    // Urutkan pesanan terbaru di paling atas berdasarkan timestamp
                     cloudOrders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
                     orders = cloudOrders;
                     orderCounter = maxNum + 1;
 
                     const currentPendingCount = orders.filter(o => o.status === 'PENDING').length;
 
-                    // Bunyikan bel & tampilkan notif jika ada pesanan baru masuk (bukan saat load awal)
                     if (!isInitialLoad && currentPendingCount > previousPendingCount) {
                         playOrderNotificationBell();
                         if (isSellerAuthenticated) {
@@ -795,7 +810,6 @@
                     renderSellerOrders();
                     updateOrderBadge();
 
-                    // Perbarui status modal antrean pembeli secara live jika sedang terbuka
                     if (lastSubmittedOrderId && !document.getElementById('queue-receipt-modal').classList.contains('hidden')) {
                         openQueueModalById(lastSubmittedOrderId);
                     }
@@ -818,13 +832,11 @@
                     });
                     deletedProductIds = deletedIds;
                     
-                    // Modify default products with updated prices if they exist in addedMenus
                     const filteredDefaults = defaultProducts.filter(p => !deletedIds.has(p.id)).map(p => {
                         const updated = addedMenus.find(am => am.id === p.id);
                         return updated ? updated : p;
                     });
                     
-                    // Get purely new menus that aren't overrides of defaults
                     const purelyNew = addedMenus.filter(am => !defaultProducts.some(dp => dp.id === am.id));
                     
                     products = [...filteredDefaults, ...purelyNew];
@@ -998,41 +1010,57 @@
             schedulePanel.classList.add('hidden');
 
             let list = [];
-            
-            // 1. Ambil data HANYA dari kategori yang sedang aktif
-            if (currentMenuCat === 'bestseller') {
-                list = products.filter(p => p.bestSeller);
-            } else {
-                list = products.filter(p => p.category === currentMenuCat);
-            }
-
-            // 2. Filter pencarian HANYA dari list kategori tersebut
             if (searchKeyword) {
-                list = list.filter(p => p.name.toLowerCase().includes(searchKeyword));
+                let baseList = products;
+                if (currentMenuCat === 'bestseller') {
+                    baseList = products.filter(p => p.bestSeller);
+                } else if (currentMenuCat !== 'schedule') {
+                    baseList = products.filter(p => p.category === currentMenuCat);
+                }
+                list = baseList.filter(p => p.name.toLowerCase().includes(searchKeyword));
                 paginationBox.classList.add('hidden');
                 pageIndicator.classList.add('hidden');
-            } else {
-                // 3. Terapkan pagination hanya untuk Foods jika tidak sedang mencari
-                if (currentMenuCat === 'foods') {
-                    const perPage = 11;
-                    const start = (currentFoodPage - 1) * perPage;
-                    list = list.slice(start, start + perPage);
+            } else if (currentMenuCat === 'bestseller') {
+                list = products.filter(p => p.bestSeller);
+                paginationBox.classList.add('hidden');
+                pageIndicator.classList.add('hidden');
+            } else if (currentMenuCat === 'foods') {
+                const allFoods = products.filter(p => p.category === 'foods');
+                const perPage = 12;
+                const totalPages = Math.max(1, Math.ceil(allFoods.length / perPage));
+                if (currentFoodPage > totalPages) currentFoodPage = totalPages;
 
+                const start = (currentFoodPage - 1) * perPage;
+                list = allFoods.slice(start, start + perPage);
+
+                if (totalPages > 1) {
                     paginationBox.classList.remove('hidden');
                     pageIndicator.classList.remove('hidden');
-                    pageIndicator.innerText = `Halaman ${currentFoodPage}/2`;
-                    document.getElementById('food-page-label').innerText = `${currentFoodPage} / 2`;
-                    document.getElementById('btn-prev-food').disabled = currentFoodPage === 1;
-                    document.getElementById('btn-next-food').disabled = currentFoodPage === 2;
+                    pageIndicator.innerText = `Halaman ${currentFoodPage}/${totalPages}`;
+                    document.getElementById('food-page-label').innerText = `${currentFoodPage} / ${totalPages}`;
+                    
+                    const btnPrev = document.getElementById('btn-prev-food');
+                    const btnNext = document.getElementById('btn-next-food');
+                    btnPrev.disabled = currentFoodPage <= 1;
+                    btnPrev.innerHTML = `<i class="fa-solid fa-arrow-left mr-1"></i> Prev (${Math.max(1, currentFoodPage - 1)}/${totalPages})`;
+                    btnPrev.onclick = () => changeFoodPage(currentFoodPage - 1);
+
+                    btnNext.disabled = currentFoodPage >= totalPages;
+                    btnNext.innerHTML = `Next (${Math.min(totalPages, currentFoodPage + 1)}/${totalPages}) <i class="fa-solid fa-arrow-right ml-1"></i>`;
+                    btnNext.onclick = () => changeFoodPage(currentFoodPage + 1);
                 } else {
                     paginationBox.classList.add('hidden');
                     pageIndicator.classList.add('hidden');
                 }
+            } else {
+                list = products.filter(p => p.category === currentMenuCat);
+                paginationBox.classList.add('hidden');
+                pageIndicator.classList.add('hidden');
             }
 
             container.innerHTML = '';
             if (list.length === 0) {
-                container.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500 font-semibold">Menu tidak ditemukan.</div>';
+                container.innerHTML = `<div class="col-span-full text-center py-8 text-gray-500 font-semibold">Menu tidak ditemukan di kategori ${titles[currentMenuCat] || 'ini'}.</div>`;
                 return;
             }
 
@@ -1180,7 +1208,6 @@
                 status: 'PENDING'
             };
 
-            // Simpan ke Cloud Storage agar langsung muncul di perangkat penjual
             if (db && currentUser) {
                 try {
                     const orderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'orders', `order_${formattedId}_${Date.now()}`);
@@ -1234,7 +1261,7 @@
             switchCustomerTab('home');
         };
 
-        function renderSellerOrders() {
+        window.renderSellerOrders = function() {
             const ordersContainer = document.getElementById('seller-order-tickets');
             const queueContainer = document.getElementById('seller-queue-tickets');
             const pendingOrders = orders.filter(o => o.status === 'PENDING');
@@ -1254,7 +1281,22 @@
                 completedOrders.forEach(ord => queueContainer.innerHTML += createTicketHTML(ord, true));
             }
 
-            const totalInc = orders.filter(o => o.status === 'COMPLETED').reduce((sum, o) => sum + o.total, 0);
+            const datePicker = document.getElementById('income-filter-date-picker');
+            const selectedDateVal = datePicker ? datePicker.value : '';
+
+            // Hanya hitung pendapatan jika penjual secara aktif memilih tanggal di date picker (default awal selalu Rp 0)
+            const filteredIncomeOrders = orders.filter(o => {
+                if (o.status !== 'COMPLETED' || !selectedDateVal) return false;
+                const orderDateObj = o.createdAt ? new Date(o.createdAt) : new Date();
+                const year = orderDateObj.getFullYear();
+                const month = String(orderDateObj.getMonth() + 1).padStart(2, '0');
+                const day = String(orderDateObj.getDate()).padStart(2, '0');
+                const orderDateIso = `${year}-${month}-${day}`;
+
+                return orderDateIso === selectedDateVal;
+            });
+
+            const totalInc = filteredIncomeOrders.reduce((sum, o) => sum + o.total, 0);
             document.getElementById('stat-total-income').innerText = `Rp ${totalInc.toLocaleString('id-ID')}`;
             updateOrderBadge();
         }
@@ -1353,6 +1395,11 @@
         };
 
         window.openAddMenuModal = function() {
+            document.getElementById('new-menu-file').value = '';
+            document.getElementById('new-menu-image-url').value = '';
+            document.getElementById('new-menu-preview-box').classList.add('hidden');
+            document.getElementById('new-menu-preview-img').src = '';
+            window._uploadedMenuImageData = null;
             document.getElementById('add-menu-modal').classList.remove('hidden');
         };
 
@@ -1360,42 +1407,67 @@
             document.getElementById('add-menu-modal').classList.add('hidden');
         };
 
+        window.previewNewMenuImage = function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxSize = 400;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxSize) {
+                            height *= maxSize / width;
+                            width = maxSize;
+                        }
+                    } else {
+                        if (height > maxSize) {
+                            width *= maxSize / height;
+                            height = maxSize;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                    window._uploadedMenuImageData = compressedDataUrl;
+
+                    const previewImg = document.getElementById('new-menu-preview-img');
+                    previewImg.src = compressedDataUrl;
+                    document.getElementById('new-menu-preview-box').classList.remove('hidden');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
         window.handleAddNewMenu = async function(event) {
             event.preventDefault();
             const name = document.getElementById('new-menu-name').value;
             const price = parseInt(document.getElementById('new-menu-price').value);
             const category = document.getElementById('new-menu-cat').value;
-            const imageFile = document.getElementById('new-menu-image').files[0];
+            const urlInput = document.getElementById('new-menu-image-url').value.trim();
 
-            let imageBase64 = null;
+            const finalImage = window._uploadedMenuImageData || urlInput || '';
 
-            if (imageFile) {
-                const reader = new FileReader();
-                reader.readAsDataURL(imageFile);
-                reader.onload = function () {
-                    imageBase64 = reader.result;
-                    saveNewMenuData(name, price, category, imageBase64);
-                };
-                reader.onerror = function (error) {
-                    console.error('Error membaca file gambar:', error);
-                    saveNewMenuData(name, price, category, null);
-                };
-            } else {
-                saveNewMenuData(name, price, category, null);
-            }
-        };
-
-        async function saveNewMenuData(name, price, category, imageBase64) {
             const newId = Date.now();
             const newMenuObj = {
                 id: newId,
                 name: name,
                 price: price,
                 category: category,
-                bestSeller: true, // Otomatis jadikan Best Seller agar muncul di beranda
+                bestSeller: false,
                 icon: 'fa-utensils',
                 color: 'bg-red-700',
-                image: imageBase64
+                image: finalImage
             };
 
             if (db && currentUser) {
@@ -1407,20 +1479,18 @@
                 }
             } else {
                 products.push(newMenuObj);
-                // Langsung arahkan ke tab kategori tempat dia ditambahkan
-                selectMenuCategory(category); 
                 renderMenuSection();
             }
 
             closeAddMenuModal();
-            showModal('Menu Ditambahkan', `Menu "${name}" berhasil ditambahkan dan otomatis muncul di aplikasi!`);
-            
+            showModal('Menu Ditambahkan', `Menu "${name}" berhasil ditambahkan ke kategori ${category.toUpperCase()}!`);
             document.getElementById('new-menu-name').value = '';
             document.getElementById('new-menu-price').value = '';
-            document.getElementById('new-menu-image').value = '';
-        }
+            document.getElementById('new-menu-file').value = '';
+            document.getElementById('new-menu-image-url').value = '';
+            window._uploadedMenuImageData = null;
+        };
 
-        
         window.openManageMenuModal = function() {
             const container = document.getElementById('manage-menu-list');
             container.innerHTML = '';
@@ -1470,7 +1540,6 @@
                 if (db && currentUser) {
                     try {
                         const menuDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'custom_menus', `menu_${productId}`);
-                        // If it's a default menu being updated, we must copy it to custom_menus to persist
                         await setDoc(menuDocRef, { ...prod, price: newPrice }, { merge: true });
                     } catch (e) {
                         console.log('Gagal update menu ke cloud', e);
@@ -1485,7 +1554,6 @@
             const prod = products.find(p => p.id === productId);
             if (!prod) return;
             
-            // Confirm before deleting
             showConfirmModal(`Hapus Menu "${prod.name}"?`, async () => {
                 deletedProductIds.add(productId);
                 products = products.filter(p => p.id !== productId);
@@ -1500,7 +1568,7 @@
                 }
 
                 renderMenuSection();
-                openManageMenuModal(); // Refresh modal
+                openManageMenuModal();
                 showModal('Menu Berhasil Dihapus', `Menu "${prod.name}" telah dihapus secara permanen dari katalog pembeli.`);
             });
         };
