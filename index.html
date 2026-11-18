@@ -142,7 +142,7 @@
         <section id="page-home" class="space-y-6">
             <div class="bg-barbarYellow rounded-3xl p-6 md:p-10 pop-card relative overflow-hidden flex flex-col items-center text-center space-y-8">
                 
-                <!-- Top Header banner -->
+                <!-- Top Header banner (Revisi Teks Saja) -->
                 <div class="w-full flex flex-col sm:flex-row items-center justify-center bg-barbarRed p-4 sm:p-5 rounded-2xl border-3 border-black shadow-md relative gap-3 min-h-[80px]">
                     <div class="w-full flex items-center justify-center text-center">
                         <h1 class="font-retro text-3xl sm:text-4xl md:text-5xl font-extrabold text-barbarYellow retro-title-stroke tracking-wider uppercase text-center m-0">
@@ -706,7 +706,7 @@
         let cart = [];
         let currentMenuCat = 'bestseller';
         let currentFoodPage = 1;
-        let lastSubmittedOrderId = null;
+        let lastSubmittedDocId = null;
         let searchKeyword = '';
 
         const SELLER_ACCESS_CODE = 'BARBAR2024';
@@ -776,20 +776,28 @@
                 const ordersRef = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
                 onSnapshot(ordersRef, (snapshot) => {
                     const cloudOrders = [];
-                    let maxNum = 0;
+                    
+                    // Cek pergantian hari (mulai dari jam 00:00:00 hari ini)
+                    const now = new Date();
+                    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+                    let maxNumToday = 0;
 
                     snapshot.forEach((docSnap) => {
                         const data = docSnap.data();
                         cloudOrders.push(data);
-                        const num = parseInt(data.orderId, 10);
-                        if (!isNaN(num) && num > maxNum) {
-                            maxNum = num;
+                        
+                        // REVISI: Cari order ID terbesar HANYA untuk pesanan hari ini saja
+                        if (data.createdAt && data.createdAt >= startOfToday) {
+                            const num = parseInt(data.orderId, 10);
+                            if (!isNaN(num) && num > maxNumToday) {
+                                maxNumToday = num;
+                            }
                         }
                     });
 
                     cloudOrders.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
                     orders = cloudOrders;
-                    orderCounter = maxNum + 1;
+                    orderCounter = maxNumToday + 1;
 
                     const currentPendingCount = orders.filter(o => o.status === 'PENDING').length;
 
@@ -806,8 +814,8 @@
                     renderSellerOrders();
                     updateOrderBadge();
 
-                    if (lastSubmittedOrderId && !document.getElementById('queue-receipt-modal').classList.contains('hidden')) {
-                        openQueueModalById(lastSubmittedOrderId);
+                    if (lastSubmittedDocId && !document.getElementById('queue-receipt-modal').classList.contains('hidden')) {
+                        openQueueModalByDocId(lastSubmittedDocId);
                     }
                 }, (error) => {
                     console.error('Error sinkronisasi pesanan:', error);
@@ -1187,7 +1195,21 @@
                 return;
             }
 
-            const formattedId = String(orderCounter++).padStart(3, '0');
+            // REVISI: Hitung ulang startOfToday untuk memastikan jika pergantian hari terjadi saat aplikasi terbuka semalaman, antrean otomatis diset ke 001.
+            const nowTime = new Date();
+            const startOfToday = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowTime.getDate()).getTime();
+            let maxNumToday = 0;
+            orders.forEach(o => {
+                if (o.createdAt && o.createdAt >= startOfToday) {
+                    const num = parseInt(o.orderId, 10);
+                    if (!isNaN(num) && num > maxNumToday) {
+                        maxNumToday = num;
+                    }
+                }
+            });
+            orderCounter = maxNumToday + 1;
+
+            const formattedId = String(orderCounter).padStart(3, '0');
             const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const now = new Date();
             const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} WIB`;
@@ -1213,10 +1235,11 @@
                     console.error('Gagal mengirim pesanan ke server:', e);
                 }
             } else {
+                newOrder.docId = 'local_' + Date.now(); // Fallback untuk dev
                 orders.unshift(newOrder);
             }
 
-            lastSubmittedOrderId = formattedId;
+            lastSubmittedDocId = newOrder.docId; // Gunakan docId sebagai referensi yang benar-benar unik
 
             document.getElementById('btn-my-queue').classList.remove('hidden');
             document.getElementById('nav-queue-num').innerText = `#${formattedId}`;
@@ -1227,15 +1250,15 @@
             document.getElementById('customer-note').value = '';
             updateCartUI();
             updateOrderBadge();
-            openQueueModalById(formattedId, newOrder);
+            openQueueModalByDocId(newOrder.docId, newOrder);
         };
 
         window.openActiveQueueModal = function() {
-            if (lastSubmittedOrderId) openQueueModalById(lastSubmittedOrderId);
+            if (lastSubmittedDocId) openQueueModalByDocId(lastSubmittedDocId);
         };
 
-        function openQueueModalById(orderId, fallbackOrder = null) {
-            const ord = orders.find(o => o.orderId === orderId) || fallbackOrder;
+        function openQueueModalByDocId(docId, fallbackOrder = null) {
+            const ord = orders.find(o => o.docId === docId) || fallbackOrder;
             if (!ord) return;
             document.getElementById('receipt-time').innerText = `At ${ord.time}`;
             document.getElementById('receipt-queue-number').innerText = `#${ord.orderId}`;
@@ -1297,6 +1320,7 @@
             updateOrderBadge();
         }
 
+        // REVISI: Action buttons di Seller Mode sekarang menggunakan docId yang tidak akan tertukar antar hari 
         function createTicketHTML(ord, isQueueView) {
             let itemsHTML = '';
             ord.items.forEach((item, idx) => {
@@ -1304,9 +1328,9 @@
                     <div class="flex justify-between items-center text-xs py-1.5 border-b border-gray-200">
                         <div class="flex items-center gap-2">
                             ${!isQueueView ? `
-                                <button onclick="adjustOrderQty('${ord.orderId}', ${idx}, -1)" class="w-5 h-5 bg-gray-200 font-bold rounded">-</button>
+                                <button onclick="adjustOrderQty('${ord.docId}', ${idx}, -1)" class="w-5 h-5 bg-gray-200 font-bold rounded">-</button>
                                 <span class="font-bold px-1">${item.qty}x</span>
-                                <button onclick="adjustOrderQty('${ord.orderId}', ${idx}, 1)" class="w-5 h-5 bg-barbarYellow font-bold rounded">+</button>
+                                <button onclick="adjustOrderQty('${ord.docId}', ${idx}, 1)" class="w-5 h-5 bg-barbarYellow font-bold rounded">+</button>
                             ` : `
                                 <span class="bg-red-100 text-barbarDarkRed font-bold px-1.5 py-0.5 rounded border border-red-300">${item.qty}x</span>
                             `}
@@ -1340,7 +1364,7 @@
                     </div>
                     <div>
                         ${!isQueueView ? `
-                            <button onclick="markPaymentCompleted('${ord.orderId}')" class="w-full bg-barbarRed hover:bg-red-700 text-yellow-300 font-retro text-lg py-2.5 rounded-2xl pop-button font-bold border-2 border-black flex items-center justify-center gap-2">
+                            <button onclick="markPaymentCompleted('${ord.docId}')" class="w-full bg-barbarRed hover:bg-red-700 text-yellow-300 font-retro text-lg py-2.5 rounded-2xl pop-button font-bold border-2 border-black flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-circle-check"></i> PAYMENT COMPLETED
                             </button>
                         ` : `
@@ -1353,8 +1377,8 @@
             `;
         }
 
-        window.adjustOrderQty = async function(orderId, itemIdx, delta) {
-            const ord = orders.find(o => o.orderId === orderId);
+        window.adjustOrderQty = async function(docId, itemIdx, delta) {
+            const ord = orders.find(o => o.docId === docId);
             if (!ord) return;
             ord.items[itemIdx].qty += delta;
             if (ord.items[itemIdx].qty <= 0) {
@@ -1362,7 +1386,7 @@
             }
             ord.total = ord.items.reduce((sum, i) => sum + (i.price * i.qty), 0);
 
-            if (db && currentUser && ord.docId) {
+            if (db && currentUser && ord.docId && !ord.docId.startsWith('local_')) {
                 try {
                     const orderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'orders', ord.docId);
                     await updateDoc(orderDocRef, { items: ord.items, total: ord.total });
@@ -1373,11 +1397,11 @@
             renderSellerOrders();
         };
 
-        window.markPaymentCompleted = async function(orderId) {
-            const ord = orders.find(o => o.orderId === orderId);
+        window.markPaymentCompleted = async function(docId) {
+            const ord = orders.find(o => o.docId === docId);
             if(ord) {
                 ord.status = 'COMPLETED';
-                if (db && currentUser && ord.docId) {
+                if (db && currentUser && ord.docId && !ord.docId.startsWith('local_')) {
                     try {
                         const orderDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'orders', ord.docId);
                         await updateDoc(orderDocRef, { status: 'COMPLETED' });
@@ -1386,7 +1410,7 @@
                     }
                 }
                 renderSellerOrders();
-                showModal('Pembayaran Sukses', `Pesanan #${orderId} lunas!`);
+                showModal('Pembayaran Sukses', `Pesanan #${ord.orderId} lunas!`);
             }
         };
 
