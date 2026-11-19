@@ -494,7 +494,7 @@
         <!-- SELLER PAGE 1: ORDER LIST -->
         <section id="seller-orders-section">
             <div class="mb-4 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-gray-800 font-retro">Daftar Tiket Pesanan Baru</h2>
+                <h2 class="text-xl font-bold text-gray-800 font-retro">Daftar Tiket Pesanan Baru (Hari Ini)</h2>
             </div>
 
             <div id="seller-order-tickets" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -505,7 +505,7 @@
         <!-- SELLER PAGE 2: QUEUE LIST -->
         <section id="seller-queue-section" class="hidden">
             <div class="mb-4">
-                <h2 class="text-xl font-bold text-gray-800 font-retro">Daftar Antrean & Pesanan Selesai (Queue List)</h2>
+                <h2 class="text-xl font-bold text-gray-800 font-retro">Daftar Antrean & Pesanan Selesai (Hari Ini)</h2>
             </div>
             <div id="seller-queue-tickets" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Finished tickets -->
@@ -715,6 +715,19 @@
         let orders = [];
         let orderCounter = 1;
         let previousPendingCount = 0;
+        let currentTrackedDate = new Date().toDateString();
+
+        // Helper: Ambil timestamp awal hari ini (00:00:00 waktu lokal)
+        function getStartOfTodayTimestamp() {
+            const now = new Date();
+            return new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        }
+
+        // Helper: Saring hanya pesanan hari ini saja
+        function getTodayOrders() {
+            const startOfToday = getStartOfTodayTimestamp();
+            return orders.filter(o => o.createdAt && o.createdAt >= startOfToday);
+        }
 
         // Fungsi Suara Bel Notifikasi Kasir (Web Audio API - Tanpa URL eksternal)
         function playOrderNotificationBell() {
@@ -776,17 +789,14 @@
                 const ordersRef = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
                 onSnapshot(ordersRef, (snapshot) => {
                     const cloudOrders = [];
-                    
-                    // Cek pergantian hari (mulai dari jam 00:00:00 hari ini)
-                    const now = new Date();
-                    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+                    const startOfToday = getStartOfTodayTimestamp();
                     let maxNumToday = 0;
 
                     snapshot.forEach((docSnap) => {
                         const data = docSnap.data();
                         cloudOrders.push(data);
                         
-                        // REVISI: Cari order ID terbesar HANYA untuk pesanan hari ini saja
+                        // Hitung nomor antrean tertinggi HANYA untuk hari ini
                         if (data.createdAt && data.createdAt >= startOfToday) {
                             const num = parseInt(data.orderId, 10);
                             if (!isNaN(num) && num > maxNumToday) {
@@ -799,7 +809,8 @@
                     orders = cloudOrders;
                     orderCounter = maxNumToday + 1;
 
-                    const currentPendingCount = orders.filter(o => o.status === 'PENDING').length;
+                    // Hitung pesanan pending HANYA untuk hari ini
+                    const currentPendingCount = getTodayOrders().filter(o => o.status === 'PENDING').length;
 
                     if (!isInitialLoad && currentPendingCount > previousPendingCount) {
                         playOrderNotificationBell();
@@ -1195,16 +1206,12 @@
                 return;
             }
 
-            // REVISI: Hitung ulang startOfToday untuk memastikan jika pergantian hari terjadi saat aplikasi terbuka semalaman, antrean otomatis diset ke 001.
-            const nowTime = new Date();
-            const startOfToday = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowTime.getDate()).getTime();
+            // Hitung ulang antrean HANYA berdasarkan pesanan hari ini agar reset ke #001 saat ganti hari
             let maxNumToday = 0;
-            orders.forEach(o => {
-                if (o.createdAt && o.createdAt >= startOfToday) {
-                    const num = parseInt(o.orderId, 10);
-                    if (!isNaN(num) && num > maxNumToday) {
-                        maxNumToday = num;
-                    }
+            getTodayOrders().forEach(o => {
+                const num = parseInt(o.orderId, 10);
+                if (!isNaN(num) && num > maxNumToday) {
+                    maxNumToday = num;
                 }
             });
             orderCounter = maxNumToday + 1;
@@ -1235,11 +1242,11 @@
                     console.error('Gagal mengirim pesanan ke server:', e);
                 }
             } else {
-                newOrder.docId = 'local_' + Date.now(); // Fallback untuk dev
+                newOrder.docId = 'local_' + Date.now();
                 orders.unshift(newOrder);
             }
 
-            lastSubmittedDocId = newOrder.docId; // Gunakan docId sebagai referensi yang benar-benar unik
+            lastSubmittedDocId = newOrder.docId;
 
             document.getElementById('btn-my-queue').classList.remove('hidden');
             document.getElementById('nav-queue-num').innerText = `#${formattedId}`;
@@ -1283,19 +1290,22 @@
         window.renderSellerOrders = function() {
             const ordersContainer = document.getElementById('seller-order-tickets');
             const queueContainer = document.getElementById('seller-queue-tickets');
-            const pendingOrders = orders.filter(o => o.status === 'PENDING');
-            const completedOrders = orders.filter(o => o.status === 'COMPLETED');
+
+            // REVISI: Hanya tampilkan Order List & Queue List dari hari ini saja (pesanan hari sebelumnya disembunyikan/refresh setiap hari baru)
+            const todayOrders = getTodayOrders();
+            const pendingOrders = todayOrders.filter(o => o.status === 'PENDING');
+            const completedOrders = todayOrders.filter(o => o.status === 'COMPLETED');
 
             ordersContainer.innerHTML = '';
             if(pendingOrders.length === 0) {
-                ordersContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-8 bg-white rounded-2xl border border-dashed border-gray-400">Tidak ada pesanan masuk.</div>';
+                ordersContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-8 bg-white rounded-2xl border border-dashed border-gray-400">Tidak ada pesanan masuk hari ini.</div>';
             } else {
                 pendingOrders.forEach(ord => ordersContainer.innerHTML += createTicketHTML(ord, false));
             }
 
             queueContainer.innerHTML = '';
             if(completedOrders.length === 0) {
-                queueContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-8 bg-white rounded-2xl border border-dashed border-gray-400">Belum ada pesanan selesai.</div>';
+                queueContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-8 bg-white rounded-2xl border border-dashed border-gray-400">Belum ada pesanan selesai hari ini.</div>';
             } else {
                 completedOrders.forEach(ord => queueContainer.innerHTML += createTicketHTML(ord, true));
             }
@@ -1303,7 +1313,7 @@
             const datePicker = document.getElementById('income-filter-date-picker');
             const selectedDateVal = datePicker ? datePicker.value : '';
 
-            // Hanya hitung pendapatan jika penjual secara aktif memilih tanggal di date picker (default awal selalu Rp 0)
+            // Fitur pendapatan tetap membaca semua riwayat orders agar bisa mengecek pendapatan tanggal kemarin/sebelumnya
             const filteredIncomeOrders = orders.filter(o => {
                 if (o.status !== 'COMPLETED' || !selectedDateVal) return false;
                 const orderDateObj = o.createdAt ? new Date(o.createdAt) : new Date();
@@ -1320,7 +1330,6 @@
             updateOrderBadge();
         }
 
-        // REVISI: Action buttons di Seller Mode sekarang menggunakan docId yang tidak akan tertukar antar hari 
         function createTicketHTML(ord, isQueueView) {
             let itemsHTML = '';
             ord.items.forEach((item, idx) => {
@@ -1617,7 +1626,7 @@
         };
 
         function updateOrderBadge() {
-            const pendingCount = orders.filter(o => o.status === 'PENDING').length;
+            const pendingCount = getTodayOrders().filter(o => o.status === 'PENDING').length;
             const badge = document.getElementById('order-badge');
             if(pendingCount > 0) {
                 badge.innerText = pendingCount;
@@ -1638,6 +1647,18 @@
         window.closeModal = function() {
             document.getElementById('custom-modal').classList.add('hidden');
         };
+
+        // Auto-refresh otomatis saat berganti hari (melewati 00:00) jika tab dibiarkan terbuka
+        setInterval(() => {
+            const todayStr = new Date().toDateString();
+            if (todayStr !== currentTrackedDate) {
+                currentTrackedDate = todayStr;
+                previousPendingCount = 0;
+                orderCounter = 1;
+                renderSellerOrders();
+                updateOrderBadge();
+            }
+        }, 60000);
 
         window.onload = function() {
             renderMenuSection();
